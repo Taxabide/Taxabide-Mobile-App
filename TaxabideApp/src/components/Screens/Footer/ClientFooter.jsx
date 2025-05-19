@@ -24,7 +24,7 @@ const ClientFooter = () => {
   useEffect(() => {
     getUserId();
   }, []);
-
+  
   return (
     <View style={[styles.footerContainer, { paddingBottom: Math.max(insets.bottom, 8) }]}>
       <View style={styles.gradientLine} />
