@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@react-native-community/cli": "^18.0.0"
+  },
+  "dependencies": {
+    "react-native-linear-gradient": "^2.8.3",
+    "react-native-paper": "^5.14.4"
+  }
+}
