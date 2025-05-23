@@ -1,13 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './slices/userSlice';
 import clientsReducer from './slices/clientsSlice';
-import ordersReducer from './slices/ordersSlice';
+import carInsuranceReducer from './slices/carInsuranceSlice';
+import healthInsuranceReducer from './slices/healthInsuranceSlice';
+import lifeInsuranceReducer from './slices/lifeInsuranceSlice';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     user: userReducer,
     clients: clientsReducer,
-    orders: ordersReducer,
+    carInsurance: carInsuranceReducer,
+    healthInsurance: healthInsuranceReducer,
+    lifeInsurance: lifeInsuranceReducer,
     // Add other reducers here as needed
   },
   middleware: (getDefaultMiddleware) =>

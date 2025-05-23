@@ -401,7 +401,9 @@ const HomeScreen = () => {
                 <Text style={styles.insuranceSubtitle}>
                   For you and your family
                 </Text>
-                <TouchableOpacity style={styles.insuranceButton}>
+                <TouchableOpacity 
+                  style={styles.insuranceButton}
+                  onPress={() => navigation.navigate('HealthInsurance')}>
                   <Text style={styles.insuranceButtonText}>Buy</Text>
                   <Icon name="chevron-right" size={20} color="#fff" />
                 </TouchableOpacity>
@@ -417,7 +419,9 @@ const HomeScreen = () => {
                 <Text style={styles.insuranceSubtitle}>
                   Life, Covered with Care
                 </Text>
-                <TouchableOpacity style={styles.insuranceButton}>
+                <TouchableOpacity 
+                  style={styles.insuranceButton}
+                  onPress={() => navigation.navigate('LifeInsuranceInvestment')}>
                   <Text style={styles.insuranceButtonText}>Investment</Text>
                   <Icon name="chevron-right" size={20} color="#fff" />
                 </TouchableOpacity>
@@ -425,7 +429,8 @@ const HomeScreen = () => {
 
               {/* Car Insurance Card */}
               <TouchableOpacity
-                style={[styles.insuranceCard, {backgroundColor: '#B0C4DE'}]}>
+                style={[styles.insuranceCard, {backgroundColor: '#B0C4DE'}]}
+                onPress={() => navigation.navigate('CarInsurance')}>
                 <View style={styles.insuranceHeaderRow}>
                   <Icon name="car-outline" size={32} color="#fff" />
                   <Text style={styles.insuranceTitle}>Car Insurance</Text>
@@ -433,7 +438,9 @@ const HomeScreen = () => {
                 <Text style={styles.insuranceSubtitle}>
                   Protection on Every Road
                 </Text>
-                <TouchableOpacity style={styles.insuranceButton}>
+                <TouchableOpacity 
+                  style={styles.insuranceButton}
+                  onPress={() => navigation.navigate('CarInsurance')}>
                   <Text style={styles.insuranceButtonText}>Buy</Text>
                   <Icon name="chevron-right" size={20} color="#fff" />
                 </TouchableOpacity>
@@ -441,7 +448,8 @@ const HomeScreen = () => {
 
               {/* Two Wheeler Insurance Card */}
               <TouchableOpacity
-                style={[styles.insuranceCard, {backgroundColor: '#ADD8E6'}]}>
+                style={[styles.insuranceCard, {backgroundColor: '#ADD8E6'}]}
+                onPress={() => navigation.navigate('TwoWheelerInsurance')}>
                 <View style={styles.insuranceHeaderRow}>
                   <Icon name="bike" size={32} color="#fff" />
                   <Text style={styles.insuranceTitle}>
@@ -451,7 +459,9 @@ const HomeScreen = () => {
                 <Text style={styles.insuranceSubtitle}>
                   Ride Safe, Stay Covered
                 </Text>
-                <TouchableOpacity style={styles.insuranceButton}>
+                <TouchableOpacity 
+                  style={styles.insuranceButton}
+                  onPress={() => navigation.navigate('TwoWheelerInsurance')}>
                   <Text style={styles.insuranceButtonText}>Buy</Text>
                   <Icon name="chevron-right" size={20} color="#fff" />
                 </TouchableOpacity>

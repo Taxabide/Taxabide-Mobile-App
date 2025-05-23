@@ -6,8 +6,9 @@ import { Provider } from 'react-redux';
 import store from './src/redux/store';
 import AppNavigator from './src/components/routes/AppNavigator';
 
-// Load fonts utility
+// Utilities
 import loadFonts from './src/utils/loadFonts';
+import initializeReduxStore from './src/utils/reduxInit';
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -17,6 +18,9 @@ export default function App() {
       try {
         // Pre-load fonts
         await loadFonts();
+        
+        // Initialize Redux store
+        initializeReduxStore();
         
         console.log('App initialized - will go to SignIn screen');
       } catch (e) {
