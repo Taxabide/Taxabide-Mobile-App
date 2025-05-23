@@ -616,10 +616,12 @@ const WebDesigning = () => {
           </View>
 
           <TouchableOpacity
-            style={[styles.submitButton, isSubmitting && styles.disabledButton]}
+            style={[
+              styles.submitButton,
+              isSubmitting && styles.disabledButton,
+            ]}
             onPress={handleSubmit}
-            disabled={isSubmitting}
-          >
+            disabled={isSubmitting}>
             {isSubmitting ? (
               <ActivityIndicator color="#fff" size="small" />
             ) : (
@@ -629,9 +631,10 @@ const WebDesigning = () => {
 
           <TouchableOpacity
             style={styles.viewDataButton}
-            onPress={() => navigation.navigate('DigiwebTable')}
-          >
-            <Text style={styles.viewDataButtonText}>View All Data</Text>
+            onPress={() => navigation.navigate('WebDesigningTable')}>
+            <Text style={styles.viewDataButtonText}>
+              View All Web Designing Data
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

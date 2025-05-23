@@ -624,16 +624,28 @@ const DigitalMarketing = () => {
             </TouchableOpacity>
             </View>
 
-          <TouchableOpacity
-            style={[styles.submitButton, isSubmitting && styles.disabledButton]}
-             onPress={handleSubmit}
-            disabled={isSubmitting}>
-            {isSubmitting ? (
-              <ActivityIndicator color="#fff" size="small" />
-            ) : (
-              <Text style={styles.submitButtonText}>Submit</Text>
-            )}
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.submitButton,
+                isSubmitting && styles.disabledButton,
+              ]}
+              onPress={handleSubmit}
+              disabled={isSubmitting}>
+              {isSubmitting ? (
+                <ActivityIndicator color="#fff" size="small" />
+              ) : (
+                <Text style={styles.submitButtonText}>Submit</Text>
+              )}
+            </TouchableOpacity>
+
+            {/* View Digital Marketing Data Button */}
+            <TouchableOpacity
+              style={styles.viewDataButton}
+              onPress={() => navigation.navigate('DigitalMarketingTable')}>
+              <Text style={styles.viewDataButtonText}>
+                View All Digital Marketing Data
+              </Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
         
@@ -901,6 +913,19 @@ const styles = StyleSheet.create({
   loginButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  viewDataButton: {
+    marginBottom: 20,
+    backgroundColor: '#28a745',
+    borderRadius: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  viewDataButtonText: {
+    color: '#fff', 
+    fontSize: 16, 
+    fontWeight: 'bold'
   },
 });
 

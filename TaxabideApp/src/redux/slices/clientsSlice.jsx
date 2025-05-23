@@ -7,7 +7,8 @@ const initialState = {
   clients: [],
   isLoading: false,
   error: null,
-  success: false
+  success: false,
+  selectedClient: null
 };
 
 // Helper function to get user ID from AsyncStorage
@@ -367,11 +368,15 @@ const clientsSlice = createSlice({
     resetError: (state) => {
       state.error = null;
     },
-    // Add a manual reset for force-refreshing state
     resetClientsState: (state) => {
       state.clients = [];
       state.isLoading = false;
       state.error = null;
+      state.success = false;
+      state.selectedClient = null;
+    },
+    selectClient: (state, action) => {
+      state.selectedClient = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -420,5 +425,16 @@ const clientsSlice = createSlice({
   },
 });
 
-export const { resetSuccess, resetError, resetClientsState } = clientsSlice.actions;
+// Export actions
+export const { 
+  resetSuccess, 
+  resetError, 
+  resetClientsState,
+  selectClient
+} = clientsSlice.actions;
+
+// Selectors
+export const selectSelectedClient = (state) => state.clients.selectedClient;
+
+// Export reducer
 export default clientsSlice.reducer; 

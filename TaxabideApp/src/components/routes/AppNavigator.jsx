@@ -16,6 +16,17 @@ import DigitalMarketing from '../Screens/DigiwebPanel/DigiWebComponent/DigitalMa
 import AppDevelopment from '../Screens/DigiwebPanel/DigiWebComponent/AppDevelopment';
 import DigiwebTable from '../Screens/DigiwebPanel/DigiwebTable/DigiwebTable';
 import AppDevelopmentTable from '../Screens/DigiwebPanel/DigiwebTable/AppDevelopmentTable';
+import DigitalMarketingTable from '../Screens/DigiwebPanel/DigiwebTable/DigitalMarketingTable';
+import WebDesigningTable from '../Screens/DigiwebPanel/DigiwebTable/WebDesigningTable';
+import WebDevelopmentTable from '../Screens/DigiwebPanel/DigiwebTable/WebDevelopmentTable';
+import CarInsurance from '../Screens/Insurance/CarInsurance';
+import CarInsuranceTable from '../Screens/Insurance/CarInsuranceTable';
+import TwoWheelerInsuranceForm from '../Screens/Insurance/TwoWheelerInsuranceForm';
+import TwoWheelerInsuranceTable from '../Screens/Insurance/TwoWheelerInsuranceTable';
+import LifeInsuranceInvestmentForm from '../Screens/Insurance/LifeInsuranceInvestmentForm';
+import LifeInsuranceInvestmentTable from '../Screens/Insurance/LifeInsuranceInvestmentTable';
+import HealthInsuranceForm from '../Screens/Insurance/HealthInsuranceForm';
+import HealthInsuranceTable from '../Screens/Insurance/HealthInsuranceTable';
 import {useSelector} from 'react-redux';
 
 const Stack = createNativeStackNavigator();
@@ -78,6 +89,65 @@ const AppNavigator = () => {
             <Stack.Screen name="AppDevelopment" component={AppDevelopment} />
             <Stack.Screen name="DigiwebTable" component={DigiwebTable} />
             <Stack.Screen name="AppDevelopmentTable" component={AppDevelopmentTable} />
+            <Stack.Screen name="DigitalMarketingTable" component={DigitalMarketingTable} />
+            <Stack.Screen name="WebDesigningTable" component={WebDesigningTable} />
+            <Stack.Screen name="WebDevelopmentTable" component={WebDevelopmentTable} />
+            <Stack.Screen 
+              name="CarInsurance" 
+              component={CarInsurance}
+              options={{
+                gestureEnabled: true,
+              }}
+            />
+            <Stack.Screen
+              name="CarInsuranceTable"
+              component={CarInsuranceTable}
+              options={{
+                gestureEnabled: true,
+              }}
+            />
+            <Stack.Screen
+              name="TwoWheelerInsurance"
+              component={TwoWheelerInsuranceForm}
+              options={{
+                gestureEnabled: true,
+              }}
+            />
+            <Stack.Screen
+              name="TwoWheelerInsuranceTable"
+              component={TwoWheelerInsuranceTable}
+              options={{
+                gestureEnabled: true,
+              }}
+            />
+            <Stack.Screen
+              name="LifeInsuranceInvestment"
+              component={LifeInsuranceInvestmentForm}
+              options={{
+                gestureEnabled: true,
+              }}
+            />
+            <Stack.Screen
+              name="LifeInsuranceInvestmentTable"
+              component={LifeInsuranceInvestmentTable}
+              options={{
+                gestureEnabled: true,
+              }}
+            />
+            <Stack.Screen
+              name="HealthInsurance"
+              component={HealthInsuranceForm}
+              options={{
+                gestureEnabled: true,
+              }}
+            />
+            <Stack.Screen
+              name="HealthInsuranceTable"
+              component={HealthInsuranceTable}
+              options={{
+                gestureEnabled: true,
+              }}
+            />
           </>
         )}
       </Stack.Navigator>
