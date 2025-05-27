@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -13,15 +13,15 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
 import ProfileNavbar from '../../NavBar/ProfileNavbar';
 import ClientFooter from '../../Footer/ClientFooter';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WebDevelopment = () => {
   const navigation = useNavigation();
-  
+
   // Input field states
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -30,10 +30,10 @@ const WebDevelopment = () => {
   const [question, setQuestion] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  
+
   // User ID state
   const [userId, setUserId] = useState(null);
-  
+
   // Client selection states
   const [clientsList, setClientsList] = useState([]);
   const [isLoadingClients, setIsLoadingClients] = useState(false);
@@ -42,7 +42,7 @@ const WebDevelopment = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [clientSearchQuery, setClientSearchQuery] = useState('');
   const [clientError, setClientError] = useState(null);
-  
+
   // Service options
   const [selectedServices, setSelectedServices] = useState({
     Domain: false,
@@ -71,7 +71,7 @@ const WebDevelopment = () => {
           return parsed.id;
         }
       }
-      
+
       // Check other possible storage location if needed
       const userInfo = await AsyncStorage.getItem('userInfo');
       if (userInfo) {
@@ -92,14 +92,14 @@ const WebDevelopment = () => {
   };
 
   // Function to fetch clients from the API
-  const fetchClients = async (currentUserId) => {
+  const fetchClients = async currentUserId => {
     try {
       setIsLoadingClients(true);
       setClientError(null);
-      
+
       // Use the provided user ID or get it from state
       const userIdToUse = currentUserId || userId;
-      
+
       if (!userIdToUse) {
         console.log('No user ID available to fetch clients');
         setClientError('Please log in to view your clients');
@@ -107,22 +107,29 @@ const WebDevelopment = () => {
         setIsLoadingClients(false);
         return;
       }
-      
-      const response = await fetch(`https://taxabide.in/api/clients-list-api.php?user_id=${userIdToUse}`);
-      
+
+      const response = await fetch(
+        `https://taxabide.in/api/clients-list-api.php?user_id=${userIdToUse}`,
+      );
+
       if (!response.ok) {
         // Try alternate endpoint if first one fails
         try {
           const alternateResponse = await fetch(
-            `https://taxabide.in/api/getClients.php?user_id=${userIdToUse}`
+            `https://taxabide.in/api/getClients.php?user_id=${userIdToUse}`,
           );
           if (alternateResponse.ok) {
             const alternateData = await alternateResponse.json();
             if (alternateData && Array.isArray(alternateData.clients)) {
               const transformedClients = alternateData.clients.map(client => ({
                 c_id: client.id || client.client_id || client._id || '0',
-                c_name: client.name || client.client_name || client.c_name || 'Unknown Client',
-                c_email: client.email || client.client_email || client.c_email || null
+                c_name:
+                  client.name ||
+                  client.client_name ||
+                  client.c_name ||
+                  'Unknown Client',
+                c_email:
+                  client.email || client.client_email || client.c_email || null,
               }));
               setClientsList(transformedClients);
               setIsLoadingClients(false);
@@ -132,12 +139,12 @@ const WebDevelopment = () => {
         } catch (alternateError) {
           console.error('Alternate API error:', alternateError);
         }
-        
+
         throw new Error('Failed to fetch clients');
       }
-      
+
       const data = await response.json();
-      
+
       if (data.status === 'success' && Array.isArray(data.data)) {
         setClientsList(data.data);
       } else {
@@ -151,7 +158,7 @@ const WebDevelopment = () => {
       setIsLoadingClients(false);
     }
   };
-  
+
   // Force refresh clients list
   const refreshClients = () => {
     fetchClients(userId);
@@ -162,36 +169,37 @@ const WebDevelopment = () => {
     if (!clientSearchQuery.trim()) {
       return clientsList;
     }
-    
+
     const query = clientSearchQuery.toLowerCase().trim();
-    return clientsList.filter(client => 
-      client.c_name.toLowerCase().includes(query) || 
-      client.c_email.toLowerCase().includes(query)
+    return clientsList.filter(
+      client =>
+        client.c_name.toLowerCase().includes(query) ||
+        client.c_email.toLowerCase().includes(query),
     );
   };
 
   // Phone input validation: Allow only numeric
-  const handlePhoneChange = (value) => {
+  const handlePhoneChange = value => {
     const numericValue = value.replace(/[^0-9]/g, '');
     setPhone(numericValue);
   };
 
   // Toggle service selection
-  const toggleService = (service) => {
+  const toggleService = service => {
     setSelectedServices(prev => ({
       ...prev,
-      [service]: !prev[service]
+      [service]: !prev[service],
     }));
   };
-  
+
   // Handle client selection
-  const handleClientSelect = (clientId) => {
+  const handleClientSelect = clientId => {
     if (clientId === '') {
       setSelectedClient('');
       setSelectedClientId(null);
       return;
     }
-    
+
     const client = clientsList.find(c => c.c_id === clientId);
     if (client) {
       setSelectedClient(client.c_name);
@@ -214,17 +222,14 @@ const WebDevelopment = () => {
 
     // Check if user is logged in
     if (!userId) {
-      Alert.alert(
-        'Login Required', 
-        'Please log in to submit this form', 
-        [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Login',
-            onPress: () => navigation.navigate('SignIn', { returnTo: 'WebDevelopment' })
-          }
-        ]
-      );
+      Alert.alert('Login Required', 'Please log in to submit this form', [
+        {text: 'Cancel', style: 'cancel'},
+        {
+          text: 'Login',
+          onPress: () =>
+            navigation.navigate('SignIn', {returnTo: 'WebDevelopment'}),
+        },
+      ]);
       return;
     }
 
@@ -232,11 +237,11 @@ const WebDevelopment = () => {
     const selectedServiceNames = Object.keys(selectedServices)
       .filter(key => selectedServices[key])
       .join(', ');
-    
+
     try {
       setIsSubmitting(true);
       setSubmitSuccess(false);
-      
+
       // Create form data object with correct field names
       const formParams = new URLSearchParams();
       formParams.append('t_d_name', name);
@@ -245,11 +250,11 @@ const WebDevelopment = () => {
       formParams.append('t_d_service', services);
       formParams.append('t_d_more_service[]', selectedServiceNames);
       formParams.append('t_d_msg', question || '');
-      
+
       // Ensure user ID is properly added in the format the backend expects
       formParams.append('t_d_user_id', userId);
       formParams.append('user_id', userId);
-      
+
       // Include client ID if a client was selected
       if (selectedClientId) {
         formParams.append('t_d_client_id', selectedClientId);
@@ -259,30 +264,30 @@ const WebDevelopment = () => {
       // Set up request with timeout
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000);
-      
+
       try {
         // Include user ID both in URL and as a separate parameter in query string
         const apiUrl = `https://taxabide.in/api/tdws-web-development-api.php?uid=${userId}&user_id=${userId}&t_d_user_id=${userId}`;
-        
+
         const response = await fetch(apiUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json',
+            Accept: 'application/json',
           },
           body: formParams.toString(),
           signal: controller.signal,
         });
-        
+
         clearTimeout(timeoutId);
-        
+
         // Get response text
         const responseText = await response.text();
-        
+
         // Success case
         if (response.ok) {
           setSubmitSuccess(true);
-          
+
           // Try to parse response for more details
           let successMessage = 'Your form has been submitted successfully!';
           try {
@@ -293,13 +298,11 @@ const WebDevelopment = () => {
           } catch (e) {
             // Use default message if can't parse
           }
-          
+
           // Show simple success message with just an OK button
-          Alert.alert(
-            'Success',
-            successMessage,
-            [{ text: 'OK', onPress: resetForm }]
-          );
+          Alert.alert('Success', successMessage, [
+            {text: 'OK', onPress: resetForm},
+          ]);
         } else {
           // Parse error message if possible
           let errorMessage = 'Server error occurred. Please try again later.';
@@ -309,18 +312,19 @@ const WebDevelopment = () => {
               errorMessage = errorData.message;
             }
           } catch (e) {}
-          
+
           Alert.alert('Error', errorMessage);
         }
       } catch (fetchError) {
         clearTimeout(timeoutId);
-        
+
         // Network errors
-        let errorMessage = 'Network error. Please check your connection and try again.';
+        let errorMessage =
+          'Network error. Please check your connection and try again.';
         if (fetchError.name === 'AbortError') {
           errorMessage = 'Request timed out. Please try again later.';
         }
-        
+
         Alert.alert('Error', errorMessage);
       }
     } catch (error) {
@@ -349,23 +353,24 @@ const WebDevelopment = () => {
     setSubmitSuccess(false);
   };
 
-  const ServiceCheckbox = ({ service, label }) => (
-    <TouchableOpacity 
-      style={styles.checkboxContainer} 
-      onPress={() => toggleService(service)}
-    >
-      <View style={[
-        styles.checkbox, 
-        selectedServices[service] ? styles.checkboxChecked : {}
-      ]} />
+  const ServiceCheckbox = ({service, label}) => (
+    <TouchableOpacity
+      style={styles.checkboxContainer}
+      onPress={() => toggleService(service)}>
+      <View
+        style={[
+          styles.checkbox,
+          selectedServices[service] ? styles.checkboxChecked : {},
+        ]}
+      />
       <Text style={styles.checkboxLabel}>{label}</Text>
     </TouchableOpacity>
   );
-  
+
   // Client dropdown component
   const ClientDropdown = () => {
     const filteredClients = getFilteredClients();
-    
+
     // Show login prompt if no user ID is available
     if (!userId) {
       return (
@@ -382,7 +387,7 @@ const WebDevelopment = () => {
               <View style={styles.dropdownHeader}>
                 <Text style={styles.dropdownTitle}>Choose Existing Client</Text>
               </View>
-              
+
               <View style={styles.loginPromptContainer}>
                 <Text style={styles.loginPromptText}>
                   Please log in to view and select your clients
@@ -396,8 +401,8 @@ const WebDevelopment = () => {
                   <Text style={styles.loginButtonText}>Login</Text>
                 </TouchableOpacity>
               </View>
-              
-              <TouchableOpacity 
+
+              <TouchableOpacity
                 style={styles.closeButton}
                 onPress={() => setDropdownVisible(false)}>
                 <Text style={styles.closeButtonText}>Close</Text>
@@ -413,21 +418,18 @@ const WebDevelopment = () => {
         visible={dropdownVisible}
         transparent={true}
         animationType="fade"
-        onRequestClose={() => setDropdownVisible(false)}
-      >
-        <TouchableOpacity 
-          style={styles.dropdownOverlay} 
+        onRequestClose={() => setDropdownVisible(false)}>
+        <TouchableOpacity
+          style={styles.dropdownOverlay}
           activeOpacity={1}
-          onPress={() => setDropdownVisible(false)}
-        >
+          onPress={() => setDropdownVisible(false)}>
           <View style={styles.dropdownContainer}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.dropdownHeader}
-              onPress={() => setDropdownVisible(false)}
-            >
+              onPress={() => setDropdownVisible(false)}>
               <Text style={styles.dropdownTitle}>Choose Existing Client</Text>
             </TouchableOpacity>
-            
+
             {/* Search Input */}
             <View style={styles.searchContainer}>
               <TextInput
@@ -438,12 +440,16 @@ const WebDevelopment = () => {
                 autoCapitalize="none"
               />
             </View>
-            
+
             {isLoadingClients ? (
-              <ActivityIndicator size="small" color="#0D6EFD" style={styles.dropdownLoading} />
+              <ActivityIndicator
+                size="small"
+                color="#0D6EFD"
+                style={styles.dropdownLoading}
+              />
             ) : filteredClients.length > 0 ? (
               <ScrollView style={styles.dropdownScrollView}>
-                {filteredClients.map((client) => (
+                {filteredClients.map(client => (
                   <TouchableOpacity
                     key={client.c_id}
                     style={styles.dropdownItem}
@@ -451,8 +457,7 @@ const WebDevelopment = () => {
                       handleClientSelect(client.c_id);
                       setDropdownVisible(false);
                       setClientSearchQuery('');
-                    }}
-                  >
+                    }}>
                     <Text style={styles.dropdownItemText}>
                       {client.c_name} , Email : {client.c_email}
                     </Text>
@@ -470,18 +475,30 @@ const WebDevelopment = () => {
     );
   };
 
+  // Navigate to WebDevelopmentTable
+  const navigateToWebDevelopmentTable = () => {
+    navigation.navigate('WebDevelopmentTable');
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ProfileNavbar navigation={navigation} />
-      
+
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.container}>
-          
-          {/* Title */}
-          <Text style={styles.heading}>
-            Tulyarth DigiWeb Services - Web Development
-          </Text>
-
+          {/* Title and View All Button */}
+          <View style={styles.headerRow}>
+            <Text style={styles.heading}>
+              Tulyarth DigiWeb Services - Web Development
+            </Text>
+            <TouchableOpacity
+              style={styles.viewTableButton}
+              onPress={navigateToWebDevelopmentTable}>
+              <Text style={styles.viewTableButtonText}>
+                View All Entries
+              </Text>
+            </TouchableOpacity>
+          </View>
           {/* Success Message */}
           {submitSuccess && (
             <View style={styles.successContainer}>
@@ -490,7 +507,6 @@ const WebDevelopment = () => {
               </Text>
             </View>
           )}
-
           {/* Full Name */}
           <Text style={styles.label}>Full Name</Text>
           <TextInput
@@ -499,7 +515,6 @@ const WebDevelopment = () => {
             value={name}
             onChangeText={setName}
           />
-
           {/* Email */}
           <Text style={styles.label}>Your Email</Text>
           <TextInput
@@ -509,7 +524,6 @@ const WebDevelopment = () => {
             onChangeText={setEmail}
             keyboardType="email-address"
           />
-
           {/* Phone Number */}
           <Text style={styles.label}>Phone Number</Text>
           <TextInput
@@ -520,31 +534,42 @@ const WebDevelopment = () => {
             keyboardType="phone-pad"
             maxLength={10}
           />
-
           {/* Services Dropdown */}
           <Text style={styles.label}>Select Service</Text>
           <View style={styles.pickerContainer}>
             <Picker
               selectedValue={services}
-              onValueChange={(itemValue) => setServices(itemValue)}
-            >
+              onValueChange={itemValue => setServices(itemValue)}>
               <Picker.Item label="--Select Services--" value="" />
-              <Picker.Item label="Web Development Static" value="Web Development Static" />
-              <Picker.Item label="Web Development Dynamic" value="Web Development Dynamic" />
-              <Picker.Item label="Web Development E-commerce " value="Web Development E-commerce" />
+              <Picker.Item
+                label="Web Development Static"
+                value="Web Development Static"
+              />
+              <Picker.Item
+                label="Web Development Dynamic"
+                value="Web Development Dynamic"
+              />
+              <Picker.Item
+                label="Web Development E-commerce "
+                value="Web Development E-commerce"
+              />
               <Picker.Item label="CMS Websites" value="CMS Websites" />
               <Picker.Item label="Web Applications" value="Web Applications" />
-              <Picker.Item label="Educational Websites" value="Educational Websites" />
+              <Picker.Item
+                label="Educational Websites"
+                value="Educational Websites"
+              />
             </Picker>
           </View>
-
           {/* Additional Services Checkboxes */}
           <Text style={styles.label}>Choose More Services</Text>
           <ServiceCheckbox service="Domain" label="Domain" />
           <ServiceCheckbox service="Hosting" label="Hosting" />
           <ServiceCheckbox service="SSL" label="SSL" />
-          <ServiceCheckbox service="ServerLimitedGB" label="Server Limited GB*" />
-
+          <ServiceCheckbox
+            service="ServerLimitedGB"
+            label="Server Limited GB*"
+          />
           {/* Question Box */}
           <Text style={styles.label}>Any Questions?</Text>
           <TextInput
@@ -556,7 +581,6 @@ const WebDevelopment = () => {
             numberOfLines={5}
             textAlignVertical="top"
           />
-
           {/* Client Selection with Dropdown */}
           <Text style={styles.label}>Choose Existing Client</Text>
           <View style={styles.clientSelectionRow}>
@@ -573,7 +597,10 @@ const WebDevelopment = () => {
                   styles.clientDropdownText,
                   !selectedClient && styles.clientDropdownPlaceholder,
                 ]}>
-                {selectedClient || (userId ? 'Choose Existing Client' : 'Login to Select Client')}
+                {selectedClient ||
+                  (userId
+                    ? 'Choose Existing Client'
+                    : 'Login to Select Client')}
               </Text>
             </TouchableOpacity>
 
@@ -589,35 +616,45 @@ const WebDevelopment = () => {
                     [
                       {text: 'Cancel', style: 'cancel'},
                       {
-                        text: 'Login', 
-                        onPress: () => navigation.navigate('SignIn', {returnTo: 'WebDevelopment'})
-                      }
-                    ]
+                        text: 'Login',
+                        onPress: () =>
+                          navigation.navigate('SignIn', {
+                            returnTo: 'WebDevelopment',
+                          }),
+                      },
+                    ],
                   );
                 }
               }}>
               <Text style={styles.addClientButtonText}>Add client</Text>
             </TouchableOpacity>
           </View>
-
           {/* Submit Button */}
           <TouchableOpacity
             style={[styles.submitButton, isSubmitting && styles.disabledButton]}
             onPress={handleSubmit}
-            disabled={isSubmitting}
-          >
+            disabled={isSubmitting}>
             {isSubmitting ? (
               <ActivityIndicator color="#fff" size="small" />
             ) : (
               <Text style={styles.submitButtonText}>Submit</Text>
             )}
           </TouchableOpacity>
+          
+          {/* View Data Button */}
+          <TouchableOpacity
+            style={styles.viewAllButton}
+            onPress={() => navigation.navigate('WebDevelopmentTable')}>
+            <Text style={styles.viewAllButtonText}>
+              VIEW ALL WEB DEVELOPMENT DATA
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
-      
+
       {/* Client Dropdown Modal */}
       <ClientDropdown />
-      
+
       <ClientFooter />
     </SafeAreaView>
   );
@@ -638,6 +675,30 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#E76B36',
     marginTop: 20,
+    flex: 1,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+    flexWrap: 'wrap',
+  },
+  viewTableButton: {
+    backgroundColor: '#1976d2',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  viewTableButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
   },
   scrollContainer: {
     flexGrow: 1,
@@ -721,6 +782,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  viewAllButton: {
+    marginTop: 20,
+    marginBottom: 20,
+    backgroundColor: '#28a745',
+    borderRadius: 5,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+  },
+  viewAllButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -742,7 +819,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
   },
-  
+
   // Dropdown styles
   dropdownOverlay: {
     flex: 1,
@@ -851,4 +928,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WebDevelopment; 
+export default WebDevelopment;
